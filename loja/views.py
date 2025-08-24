@@ -21,3 +21,6 @@ def loja(request, slug_categoria=None):
         'contador_produtos': contador_produtos,
     }
     return render(request, 'loja/loja.html', context)
+
+def produto_detail(request, slug_categoria, slug_produto):
+    return render(request, 'loja/produto_detail.html')
