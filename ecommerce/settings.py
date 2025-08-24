@@ -124,10 +124,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR /'static'
+
 STATICFILES_DIRS = [
-    'ecommerce/static',
+    BASE_DIR / 'static',  # caminho para suas pastas de arquivos estáticos de desenvolvimento
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # para collectstatic, diferente da pasta de dev
 
 # media file configuration
 MEDIA_URL = '/media/'
