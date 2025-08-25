@@ -21,13 +21,15 @@
 </tr>
 </thead>
 <tbody>
+
+{% for carrinho_item in carrinho_itens %}
 <tr>
 	<td>
 		<figure class="itemside align-items-center">
-			<div class="aside"><img src="{% static './images/items/11.jpg' %}" class="img-sm"></div>
+			<div class="aside"><img src="{{ carrinho_item.produto.imagens.url }}" class="img-sm"></div>
 			<figcaption class="info">
-				<a href="#" class="title text-dark">Camera Canon EOS M50 Kit</a>
-				<p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+				<a href="#" class="title text-dark">{{ carrinho_item.produto.nome_produto }}</a>
+				<p class="text-muted small">Cor: 25 Mpx <br> Tamanho: Canon</p>
 			</figcaption>
 		</figure>
 	</td>
@@ -38,23 +40,25 @@
 							<div class="input-group-prepend">
 							<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
 							</div>
-							<input type="text" class="form-control"  value="1">
+							<input type="text" class="form-control"  value="{{ carrinho_item.quantidade }}">
 							<div class="input-group-append">
-							<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+							<a href="{% url 'add_carrinho' carrinho_item.produto.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
 							</div>
 						</div> <!-- input-group.// -->
 					</div> <!-- col.// -->
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">$1156.00</var> 
-			<small class="text-muted"> $315.20 each </small> 
+			<var class="price">R$ {{ carrinho_item.sub_total }}</var> 
+			<small class="text-muted"> {{ carrinho_item.produto.preço }} each </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="" class="btn btn-danger"> Remove</a>
+	<a href="" class="btn btn-danger"> Remover</a>
 	</td>
 </tr>
+{% endfor %}
+
 </tbody>
 </table>
 </div> <!-- card.// -->
@@ -66,7 +70,7 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right">$69.97</dd>
+			  <dd class="text-right">R$ {{total}}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>

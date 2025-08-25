@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from loja.models import Produto
 from .models import Carrinho, CarrinhoItem
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
-from django.http import HttpResponse 
 
 def _carrinho_id(request):
     carrinho = request.session.session_key
@@ -31,19 +31,17 @@ def add_carrinho(request, produto_id):
             quantidade = 1,
             carrinho = carrinho,
         )
-        carrinho_item.save()
-    return HttpResponse(carrinho_item.produto)
-    exite()
+        carrinho_item.save()   
     return redirect('carrinho')
 
 def carrinho(request, total=0, quantidade=0, carrinho_itens=None):
     try:
-        carrinho= Carrinho.objects.get(_carrinho_id(request))
-        carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esata_ativo=True)
+        carrinho= Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+        carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esta_ativo=True)
         for carrinho_item in carrinho_itens:
             total += (carrinho_item.produto.preço * carrinho_item.quantidade)
             quantidade += carrinho_item.quantidade
-    except ObjectNotExist:
+    except ObjectDoesNotExist:
         pass 
     
     context = {
