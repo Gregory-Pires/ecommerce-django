@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from loja.models import Produto
 from .models import Carrinho, CarrinhoItem
 from django.core.exceptions import ObjectDoesNotExist
@@ -32,6 +32,24 @@ def add_carrinho(request, produto_id):
             carrinho = carrinho,
         )
         carrinho_item.save()   
+    return redirect('carrinho')
+
+def remover_carrinho(request, produto_id):
+    carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+    produto = get_object_or_404(Produto, id=produto_id)
+    carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho)
+    if carrinho_item.quantidade > 1:
+        carrinho_item.quantidade -= 1
+        carrinho_item.save()
+    else:
+        carrinho_item.delete()
+    return redirect('carrinho')
+
+def remover_carrinho_item(request, produto_id):
+    carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+    produto = get_object_or_404(Produto, id=produto_id)
+    carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho)
+    carrinho_item.delete()
     return redirect('carrinho')
 
 def carrinho(request, total=0, quantidade=0, carrinho_itens=None):
