@@ -7,6 +7,15 @@
 <div class="container">
 
 <!-- ============================ COMPONENT 1 ================================= -->
+{% if not carrinho_itens %}
+    <h2 class="text-center">Seu carrinho esta vazio</h2>
+    <br>
+    <div class="text-center">
+        <a href="{% url 'loja' %}" class="btn btn-primary">Continuar Compras</a>
+    </div>
+
+    </div>
+{% else %}
 
 <div class="row">
 	<aside class="col-lg-9">
@@ -14,8 +23,8 @@
 <table class="table table-borderless table-shopping-cart">
 <thead class="text-muted">
 <tr class="small text-uppercase">
-  <th scope="col">Product</th>
-  <th scope="col" width="120">Quantity</th>
+  <th scope="col">Produto</th>
+  <th scope="col" width="120">Quantidade</th>
   <th scope="col" width="120">Price</th>
   <th scope="col" class="text-right" width="200"> </th>
 </tr>
@@ -79,7 +88,7 @@
 				<img src="{% static './images/misc/payments.png' %}" height="26">
 			</p>
 			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
-			<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+			<a href="./store.html" class="btn btn-light btn-block">Continuar Comprando</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
 
@@ -87,6 +96,7 @@
 
 
 </div> <!-- row.// -->
+{% endif %}
 <!-- ============================ COMPONENT 1 END .// ================================= -->
 
 </div> <!-- container .//  -->
