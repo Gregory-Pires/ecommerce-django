@@ -36,5 +36,20 @@ def add_carrinho(request, produto_id):
     exite()
     return redirect('carrinho')
 
-def carrinho(request):
-    return render(request, 'loja/carrinho.html')
+def carrinho(request, total=0, quantidade=0, carrinho_itens=None):
+    try:
+        carrinho= Carrinho.objects.get(_carrinho_id(request))
+        carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esata_ativo=True)
+        for carrinho_item in carrinho_itens:
+            total += (carrinho_item.produto.preço * carrinho_item.quantidade)
+            quantidade += carrinho_item.quantidade
+    except ObjectNotExist:
+        pass 
+    
+    context = {
+        'total' :total,
+        'quantidade' : quantidade,
+        'carrinho_itens' : carrinho_itens,
+    }
+
+    return render(request, 'loja/carrinho.html', context)
