@@ -19,7 +19,7 @@ def loja(request, slug_categoria=None):
         paged_produtos = paginator.get_page(page)
         contador_produtos = produtos.count()
     else:
-        produtos = Produto.objects.all().filter(esta_disponível=True)
+        produtos = Produto.objects.all().filter(esta_disponível=True).order_by('id')
         paginator = Paginator(produtos, 3)
         page = request.GET.get('page')
         paged_produtos = paginator.get_page(page)
