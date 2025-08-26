@@ -2,9 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from .models import Produto
 from categoria.models import Categoria
 from carrinho.models import CarrinhoItem
+from django.db.models import Q
 
 from carrinho.views import _carrinho_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
+from django.http import HttpResponse
 # Create your views here.
 
 def loja(request, slug_categoria=None):
@@ -42,3 +45,15 @@ def produto_detail(request, slug_categoria, slug_produto):
         'in_carrinho': in_carrinho
     }
     return render(request, 'loja/produto_detail.html', context)
+
+def pesquisa(request):
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        if keyword:
+            produtos = Produto.objects.order_by('-data_criação').filter(Q(descrição__icontains=keyword) | Q(nome_produto__icontains=keyword))
+            contador_produtos = produtos.count()
+    context = {
+        'produtos': produtos,
+        'contador_produtos': contador_produtos,
+    }
+    return render(request, 'loja/loja.html', context)
