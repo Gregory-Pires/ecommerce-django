@@ -3,6 +3,7 @@ from loja.models import Produto
 from .models import Carrinho, CarrinhoItem
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.http import HttpResponse
 # Create your views here.
 
 def _carrinho_id(request):
@@ -12,6 +13,11 @@ def _carrinho_id(request):
     return carrinho
 
 def add_carrinho(request, produto_id):
+    cor = request.GET['cor']
+    tamanho = request.GET['tamanho']
+    return HttpResponse(cor + ' ' + tamanho)
+    exite()
+
     produto = Produto.objects.get(id=produto_id)
     try:
         carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
