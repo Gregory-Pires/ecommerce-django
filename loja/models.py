@@ -20,3 +20,18 @@ class Produto(models.Model):
     
     def __str__(self):
         return self.nome_produto
+    
+variação_escolha_categoria = (
+        ('cor', 'cor'),
+        ('tamanho', 'tamanho'),
+)
+    
+class Variação(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    variação_categoria = models.CharField(max_length=100, choices=variação_escolha_categoria)
+    valor_variação = models.CharField(max_length=100)
+    esta_ativo = models.BooleanField(default=True)
+    data_criação = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.produto
