@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from loja.models import Produto
+from loja.models import Produto, Variação
 from .models import Carrinho, CarrinhoItem
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -14,9 +14,15 @@ def _carrinho_id(request):
 
 def add_carrinho(request, produto_id):
     if request.method == 'POST':
-        cor = request.POST['cor']
-        tamanho = request.POST['tamanho']
-        print(cor, tamanho)
+        for item in request.POST:
+            key = item
+            value = request.POST[key]
+            
+            try:
+                variação = Variação.objects.get(variação_categoria__iexact=key, valor_variação__iexact=value)
+                print(variação)
+            except:
+                pass
 
     produto = Produto.objects.get(id=produto_id)
     try:
