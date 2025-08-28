@@ -22,7 +22,7 @@ def add_carrinho(request, produto_id):
             
             try:
                 variação = Variação.objects.get(produto=produto, variação_categoria__iexact=key, valor_variação__iexact=value)
-                variação_produto.append(variaçãoa)
+                variação_produto.append(variação)
             except:
                 pass
 
@@ -36,6 +36,10 @@ def add_carrinho(request, produto_id):
 
     try:
         carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho)
+        if len(variação_produto) > 0:
+            carrinho_item.variações.clear()
+            for item in variação_produto:
+                carrinho_item.variações.add(item)
         carrinho_item.quantidade += 1
         carrinho_item.save()
     except CarrinhoItem.DoesNotExist:
@@ -44,6 +48,10 @@ def add_carrinho(request, produto_id):
             quantidade = 1,
             carrinho = carrinho,
         )
+        if len(variação_produto) > 0:
+            carrinho_item.variações.clear()
+            for item in variação_produto:
+                carrinho_item.variações.add(item)
         carrinho_item.save()   
     return redirect('carrinho')
 

@@ -58,13 +58,8 @@
 					<hr>
 					{% if produto_unico.quantidade <= 0 %}
 						<h5 class="text-danger">Produto fora de estoque</h5>
-						{% else %}
-							{% if in_carrinho %}
-							<a href="#" class="btn  btn-success"> <span class="text">Adicionado ao Carrinho</span> <i class="fas fa-check"></i>  </a>
-							<a href="{% url 'carrinho' %}" class="btn  btn-outline-primary"> <span class="text">Ver Carrinho</span> <i class="fas fa-eye"></i>  </a>
-						{% else %}
-						<button type="submit"  class="btn  btn-primary"> <span class="text">Adicionar ao Carrinho</span> <i class="fas fa-shopping-cart"></i>  </button>
-						{% endif %}
+						{% else %}							
+							<button type="submit"  class="btn  btn-primary"> <span class="text">Adicionar ao Carrinho</span> <i class="fas fa-shopping-cart"></i>  </button>
 					{% endif %}
 				</article> <!-- product-info-aside .// -->
 			</form>		
