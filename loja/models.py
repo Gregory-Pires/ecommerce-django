@@ -21,6 +21,13 @@ class Produto(models.Model):
     def __str__(self):
         return self.nome_produto
     
+class VariationManager(models.Manager):
+    def cores(self):
+        return super(VariationManager, self).filter(variação_categoria='cor', esta_ativo=True)
+    
+    def tamanhos(self):
+        return super(VariationManager, self).filter(variação_categoria='tamanho', esta_ativo=True)
+
 variação_escolha_categoria = (
         ('cor', 'cor'),
         ('tamanho', 'tamanho'),
@@ -33,5 +40,7 @@ class Variação(models.Model):
     esta_ativo = models.BooleanField(default=True)
     data_criação = models.DateTimeField(auto_now=True)
 
+    objects = VariationManager()
+   
     def __unicode__(self):
         return self.produto

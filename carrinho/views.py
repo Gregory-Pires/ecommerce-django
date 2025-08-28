@@ -13,9 +13,10 @@ def _carrinho_id(request):
     return carrinho
 
 def add_carrinho(request, produto_id):
-    cor = request.GET['cor']
-    tamanho = request.GET['tamanho']
-    
+    if request.method == 'POST':
+        cor = request.POST['cor']
+        tamanho = request.POST['tamanho']
+        print(cor, tamanho)
 
     produto = Produto.objects.get(id=produto_id)
     try:
