@@ -15,8 +15,7 @@ def _carrinho_id(request):
 def add_carrinho(request, produto_id):
     cor = request.GET['cor']
     tamanho = request.GET['tamanho']
-    return HttpResponse(cor + ' ' + tamanho)
-    exite()
+    
 
     produto = Produto.objects.get(id=produto_id)
     try:

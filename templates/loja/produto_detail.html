@@ -35,10 +35,11 @@
 					<div class="row">
 						<div class="item-option-select">
 							<h6>Cor</h6>
-								<select name="cor" class="form-control">
-									<option value="vermelho">Vermelho</option>
-									<option value="amarelo">Amarelo</option>
-									<option value="verde">Verde</option>
+								<select name="cor" class="form-control" required>
+									<option value="disabled selected">Selecione uma cor</option>
+									{% for i in produto_unico.variação_set.all %}
+									<option value="{{ i.valor_variação }}">{{ i.valor_variação }}</option>
+									{% endfor %}
 								</select>
 						</div>
 					</div> <!-- row.// -->
