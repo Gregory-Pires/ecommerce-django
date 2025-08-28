@@ -13,18 +13,19 @@ def _carrinho_id(request):
     return carrinho
 
 def add_carrinho(request, produto_id):
+    produto = Produto.objects.get(id=produto_id)
+    variação_produto = []
     if request.method == 'POST':
         for item in request.POST:
             key = item
             value = request.POST[key]
             
             try:
-                variação = Variação.objects.get(variação_categoria__iexact=key, valor_variação__iexact=value)
-                print(variação)
+                variação = Variação.objects.get(produto=produto, variação_categoria__iexact=key, valor_variação__iexact=value)
+                variação_produto.append(variaçãoa)
             except:
                 pass
 
-    produto = Produto.objects.get(id=produto_id)
     try:
         carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
     except Carrinho.DoesNotExist:
