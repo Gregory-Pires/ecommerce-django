@@ -34,15 +34,34 @@ def add_carrinho(request, produto_id):
         )
     carrinho.save()
 
-    try:
-        carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho)
-        if len(variação_produto) > 0:
-            carrinho_item.variações.clear()
-            for item in variação_produto:
-                carrinho_item.variações.add(item)
-        carrinho_item.quantidade += 1
-        carrinho_item.save()
-    except CarrinhoItem.DoesNotExist:
+    carrinho_item_existe = CarrinhoItem.objects.filter(produto=produto, carrinho=carrinho).exists()
+    if carrinho_item_existe:   
+        carrinho_item = CarrinhoItem.objects.filter(produto=produto, carrinho=carrinho)
+
+        ex_var_list = []
+        id = []
+        for item in carrinho_item:
+            variacao_existente = item.variações.all()
+            ex_var_list.append(list(variacao_existente))
+            id.append(item.id)
+
+        print(ex_var_list)
+
+        if variação_produto in ex_var_list:
+            index = ex_var_list.index(variação_produto)
+            item_id = id[index]
+            item = CarrinhoItem.objects.get(produto=produto, id=item_id)
+            item.quantidade +=1
+            item.save()
+
+            
+        else:
+            item = CarrinhoItem.objects.create(produto=produto, quantidade=1, carrinho=carrinho)     
+            if len(variação_produto) > 0:
+                item.variações.clear()
+                item.variações.add(*variação_produto)
+            item.save()
+    else:        
         carrinho_item = CarrinhoItem.objects.create(
             produto = produto,
             quantidade = 1,
@@ -50,8 +69,7 @@ def add_carrinho(request, produto_id):
         )
         if len(variação_produto) > 0:
             carrinho_item.variações.clear()
-            for item in variação_produto:
-                carrinho_item.variações.add(item)
+            carrinho_item.variações.add(*variação_produto)
         carrinho_item.save()   
     return redirect('carrinho')
 
