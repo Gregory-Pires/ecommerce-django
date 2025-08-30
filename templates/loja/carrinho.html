@@ -52,11 +52,17 @@
 					<div class="col"> 
 						<div class="input-group input-spinner">
 							<div class="input-group-prepend">
-							<a href="{% url 'remover_carrinho' carrinho_item.produto.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
+							<a href="{% url 'remover_carrinho' carrinho_item.produto.id carrinho_item.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
 							</div>
 							<input type="text" class="form-control"  value="{{ carrinho_item.quantidade }}">
 							<div class="input-group-append">
-							<a href="{% url 'add_carrinho' carrinho_item.produto.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+								<form action="{% url 'add_carrinho' carrinho_item.produto.id %}" method="POST">
+									{% csrf_token %}
+									{% for item in carrinho_item.variações.all %}
+									<input type="hidden" name="{{ item.variação_categoria | lower }}" value="{{ item.valor_variação | capfirst }}">										
+									{% endfor %}
+									<button class="btn btn-light" type="submit" id="button-minus"> <i class="fa fa-plus"></i> </button>
+								</form>
 							</div>
 						</div> <!-- input-group.// -->
 					</div> <!-- col.// -->
@@ -68,7 +74,7 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="{% url 'remover_carrinho_item' carrinho_item.produto.id %}" class="btn btn-danger"> Remover</a>
+	<a href="{% url 'remover_carrinho_item' carrinho_item.produto.id carrinho_item.id %}" onclick="return confirm('Você tem certeza que quer remover este item?')" class="btn btn-danger"> Remover</a>
 	</td>
 </tr>
 {% endfor %}
