@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'contas',
     'loja',
     'carrinho',
+    'cpf_field',
 ]
 
 MIDDLEWARE = [

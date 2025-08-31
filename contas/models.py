@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from cpf_field.models import CPFField
 
 # Create your models here.
 
 class MyContaManager(BaseUserManager):
-    def create_user(self, nome, sobrenome, nome_usuário, email, password=None):
+    def create_user(self, nome, sobrenome, nome_usuário, email, numero_telefone, cpf,password=None):
         if not email:
             raise ValueError('Usuário deve ter um endereço de email')
       
@@ -16,6 +17,9 @@ class MyContaManager(BaseUserManager):
            nome_usuário = nome_usuário,
            nome = nome,
            sobrenome = sobrenome,
+           numero_telefone = numero_telefone,
+           cpf = cpf,
+
         )
 
         user.set_password(password)

@@ -64,8 +64,8 @@
                         <div class="widget-header">
                             <small class="title text-muted">Bem vindo!</small>
                             <div> 
-                                <a href="./signin.html">Entrar</a> <span class="dark-transp"> | </span>
-                                <a href="./register.html"> Cadastrar</a>
+                                <a href="{% url 'login' %}">Entrar</a> <span class="dark-transp"> | </span>
+                                <a href="{% url 'cadastro' %}"> Cadastrar</a>
                             </div>
                         </div>
                         <a href="{% url 'carrinho' %}" class="widget-header pl-3 ml-3">
