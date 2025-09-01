@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import CadastroForm
 from .models import Conta
 from django.contrib import messages
@@ -20,6 +20,8 @@ def cadastro(request):
 
             user = Conta.objects.create_user(nome=nome, sobrenome=sobrenome, email=email, numero_telefone=numero_telefone, cpf=cpf, nome_usuário=nome_usuário, password=password )
             user.save()
+            messages.success(request, 'Cadastro concluído com sucesso')
+            return redirect('cadastro')
     else:       
         form = CadastroForm()
     context = {
