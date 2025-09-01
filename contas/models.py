@@ -26,13 +26,15 @@ class MyContaManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, nome, sobrenome, email, nome_usuário, password):
+    def create_superuser(self, nome, sobrenome, email, nome_usuário, numero_telefone, cpf,password):
         user = self.create_user(
            email = self.normalize_email(email),
            nome_usuário = nome_usuário,
            password = password,
            nome = nome,
-           sobrenome = sobrenome,        
+           sobrenome = sobrenome,
+           numero_telefone=numero_telefone,
+           cpf=cpf,     
         )
         user.is_admin = True
         user.is_active = True
@@ -47,7 +49,7 @@ class Conta(AbstractBaseUser):
     nome_usuário    = models.CharField(max_length=50, unique=True)
     email           = models.EmailField(max_length=100, unique=True)
     numero_telefone = models.CharField(max_length=50)
-    cpf             = models.CharField(max_length=11, unique=True)
+    cpf             = models.CharField(max_length=14, unique=True)
 
     #requerid
     data_cadastro   = models.DateTimeField(auto_now_add=True)
@@ -58,7 +60,7 @@ class Conta(AbstractBaseUser):
     is_superadmin   = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nome_usuário', 'nome', 'sobrenome']
+    REQUIRED_FIELDS = ['nome_usuário', 'nome', 'sobrenome', 'numero_telefone', 'cpf']
 
     objects = MyContaManager()
 
