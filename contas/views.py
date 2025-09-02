@@ -2,7 +2,8 @@
 from django.shortcuts import render, redirect
 from .forms import CadastroForm
 from .models import Conta
-from django.contrib import messages
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -30,9 +31,25 @@ def cadastro(request):
     return render(request, 'contas/cadastro.html', context)
 
 def login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = auth.authenticate(email=email, password=password)
+        
+        if user is not None:
+            auth.login(request, user)
+            #messages.success(request, 'Você Entrou.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Credencias erradas')
+            return redirect('login')
     return render(request, 'contas/login.html')
 
+@login_required(login_url = 'login')
 def logout(request):
-    return
+    auth.logout(request)
+    messages.success(request,  'Você saiu.')
+    return redirect('login')
 
 
