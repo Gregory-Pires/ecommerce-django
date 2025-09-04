@@ -4,8 +4,17 @@ from .forms import CadastroForm
 from .models import Conta
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 # Create your views here.
+
+#verificação email
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
 
 def cadastro(request):
     if request.method == 'POST':
@@ -21,8 +30,21 @@ def cadastro(request):
 
             user = Conta.objects.create_user(nome=nome, sobrenome=sobrenome, email=email, numero_telefone=numero_telefone, cpf=cpf, nome_usuário=nome_usuário, password=password )
             user.save()
-            messages.success(request, 'Cadastro concluído com sucesso')
-            return redirect('cadastro')
+
+            #USER actvation
+            current_site = get_current_site(request)
+            mail_subject = 'Por favor ative sua conta'
+            message = render_to_string('contas/verificação_conta_email.html', {
+                'user': user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
+            #messages.success(request, 'Muito obrigado por se cadastrar conosco. Enviamos um email para a ativação da conta. Por favor verifique seu email')
+            return redirect('/contas/login/?command=ativacao&email='+email)
     else:       
         form = CadastroForm()
     context = {
@@ -52,4 +74,19 @@ def logout(request):
     messages.success(request,  'Você saiu.')
     return redirect('login')
 
+def ativar(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Conta._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Conta.DoesNotExist):
+        user = None
+    
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Parabéns! sua conta foi ativada. ')
+        return redirect('login')
+    else:
+        messages.error(request, 'Link de validação inválido')
+        return redirect('cadastro')
 
