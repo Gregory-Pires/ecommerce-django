@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'categoria',
     'contas',
     'loja',
-    'carrinho',
+    'carrinhos',
     'cpf_field',
 ]
 
@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'categoria.context_processors.menu_links',
-                'carrinho.context_processors.contador'
+                'carrinhos.context_processors.contador'
             ],
         },
     },

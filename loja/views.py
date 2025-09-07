@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Produto
 from categoria.models import Categoria
-from carrinho.models import CarrinhoItem
+from carrinhos.models import CarrinhoItem
 from django.db.models import Q
 
-from carrinho.views import _carrinho_id
+from carrinhos.views import _carrinho_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from django.http import HttpResponse

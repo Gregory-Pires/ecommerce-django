@@ -6,6 +6,7 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+
 # Create your views here.
 
 #verificação email
@@ -15,6 +16,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
+
+from carrinhos.views import _carrinho_id
+from carrinhos.models import Carrinho, CarrinhoItem
 
 def cadastro(request):
     if request.method == 'POST':
@@ -60,6 +64,18 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
         
         if user is not None:
+            try:               
+                carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+                carrinho_item_existe = CarrinhoItem.objects.filter(carrinho=carrinho).exists()                
+                if carrinho_item_existe:
+                    carrinho_item = CarrinhoItem.objects.filter(carrinho=carrinho)
+                    
+                    for item in carrinho_item:
+                        item.usuário = user
+                        item.save()
+            except:                           
+                pass
+
             auth.login(request, user)
             messages.success(request, 'Você Entrou.')
             return redirect('painel')

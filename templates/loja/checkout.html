@@ -13,7 +13,8 @@
 <div class="card">
     <div class="card-body">
         <h4 class="card-title mb-4">Endereço de cobrança</h4>
-        <form action="">
+        <form action="" method="POST">
+            {% csrf_token %}
             <div class="form-row">
                 <div class="col form-group">
                     <label for="">Nome</label>
@@ -58,7 +59,7 @@
                     <label for="">Nota do Pedido</label>
                     <textarea name="nota_pedido" rows="2" class="form-control"></textarea>                
             </div>
-        </form>
+        
     </div>
 </div> <!-- card.// -->
 
@@ -108,8 +109,9 @@
 
 </tbody>
 </table>
-			<a href="./place-order.html" class="btn btn-primary btn-block"> Pagar </a>
+			<button type="submit" name="pagar" class="btn btn-primary btn-block">Pagamento</button>
 			<a href="{% url 'loja' %}" class="btn btn-light btn-block">Continuar Comprando</a>
+            </form>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
 

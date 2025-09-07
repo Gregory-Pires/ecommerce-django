@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from loja.models import Produto, Variação
 from .models import Carrinho, CarrinhoItem
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse
 # Create your views here.
@@ -112,7 +113,8 @@ def carrinho(request, total=0, quantidade=0, carrinho_itens=None):
 
     return render(request, 'loja/carrinho.html', context)
 
-def pagamento(request, total=0, quantidade=0, carrinho_itens=None):
+@login_required(login_url='login')
+def checkout(request, total=0, quantidade=0, carrinho_itens=None):
     try:
         carrinho= Carrinho.objects.get(carrinho_id=_carrinho_id(request))
         carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esta_ativo=True)
@@ -127,4 +129,4 @@ def pagamento(request, total=0, quantidade=0, carrinho_itens=None):
         'quantidade' : quantidade,
         'carrinho_itens' : carrinho_itens,
     }
-    return render(request, 'loja/pagamento.html', context)
+    return render(request, 'loja/checkout.html', context)
