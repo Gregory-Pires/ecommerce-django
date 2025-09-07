@@ -5,6 +5,9 @@ urlpatterns = [
     path('cadastro/', views.cadastro, name='cadastro'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('painel/', views.painel, name='painel'),
+    path('', views.painel, name='painel'),
+
 
     path('ativar/<uidb64>/<token>/', views.ativar, name='ativar')
 

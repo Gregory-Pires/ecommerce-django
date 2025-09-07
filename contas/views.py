@@ -61,8 +61,8 @@ def login(request):
         
         if user is not None:
             auth.login(request, user)
-            #messages.success(request, 'Você Entrou.')
-            return redirect('home')
+            messages.success(request, 'Você Entrou.')
+            return redirect('painel')
         else:
             messages.error(request, 'Credencias erradas')
             return redirect('login')
@@ -89,4 +89,8 @@ def ativar(request, uidb64, token):
     else:
         messages.error(request, 'Link de validação inválido')
         return redirect('cadastro')
+
+@login_required(login_url = 'login')
+def painel(request):
+    return render(request, 'contas/painel.html')
 
