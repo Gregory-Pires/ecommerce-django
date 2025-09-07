@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+Olá {{user.nome}},
+
+Como solicitado, por favor click no link abaixo para criar uma nova senha.
+http://{{domain}}{% url 'resetsenha_validate' uidb64=uid token=token %}
+
+se você não se cadastrou conosco, por favor ignore esse email.
+
+{% endautoescape %}

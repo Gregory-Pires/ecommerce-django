@@ -7,35 +7,24 @@
 
 <!-- ============================ COMPONENT LOGIN   ================================= -->
 
-{% if request.GET.command == 'ativacao' %}
 
-<div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
-  Muito obrigado por se cadastrar conosco. Enviamos um email para a ativação da conta. Por favor verifique seu email [{{ request.GET.email }}].
- <br><br>
-  Sua conta ja está ativa? <a href="{% url 'login' %}">Login</a>
-</div>
 
-{% else %}
-
-<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+<div class="card mx-auto" style="max-width: 600px; margin-top:100px;">
         <div class="card-body">
-      <h4 class="card-title mb-4">Entrada</h4>
+      <h4 class="card-title mb-4">Esqueceu sua Senha</h4>
       {% include 'includes/alerts.html' %}
-      <form action="{% url 'login' %}" method="POST">
+      <form action="{% url 'esqueceusuasenha' %}" method="POST">
         {% csrf_token %}
           <div class="form-group">
 			 <input type="email" class="form-control" placeholder="Email"  name="email">
-          </div> <!-- form-group// -->
-          <div class="form-group">
-			<input type="password" class="form-control" placeholder="Senha" name="password">
-          </div> <!-- form-group// -->
+          </div> <!-- form-group// -->        
           
           <div class="form-group">
-          	<a href="{% url 'esqueceusuasenha' %}" class="float-right">Esqueceu sua senha?</a> 
+          	<a href="{% url 'login' %}" class="float-right">Lembra da senha? Entrar</a> 
            
           </div> <!-- form-group form-check .// -->
           <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-block"> Entrar  </button>
+              <button type="submit" class="btn btn-primary btn-block"> Enviar  </button>
           </div> <!-- form-group// -->    
       </form>
       </div> <!-- card-body.// -->
@@ -44,9 +33,6 @@
      <p class="text-center mt-4">Não tem uma conta? <a href="{% url 'cadastro' %}">Cadastrar</a></p>
      <br><br>
 <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
-
-{% endif %}
-
 
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
