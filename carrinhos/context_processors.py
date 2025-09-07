@@ -8,7 +8,10 @@ def contador(request):
     else:
         try:
             carrinho = Carrinho.objects.filter(carrinho_id=_carrinho_id(request))
-            carrinho_itens = CarrinhoItem.objects.all().filter(carrinho=carrinho[:1])
+            if request.user.is_authenticated:
+                carrinho_itens = CarrinhoItem.objects.all().filter(usuário=request.user)
+            else:
+                carrinho_itens = CarrinhoItem.objects.all().filter(carrinho=carrinho[:1])
             for carrinho_item in carrinho_itens:
                 carrinho_contador += carrinho_item.quantidade
         except Carrinho.DoesNotExist:
