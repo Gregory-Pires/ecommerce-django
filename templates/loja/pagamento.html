@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+
+<!-- ============================ COMPONENT 1 ================================= -->
+
+<div class="row">
+	<aside class="col-lg-6">
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Endereço de cobrança</h4>
+        <form action="">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label for="">Nome</label>
+                    <input type="text" name="nome" class="form-control" required>
+                </div>
+                 <div class="col form-group">
+                    <label for="">Sobrenome</label>
+                    <input type="text" name="sobrenome" class="form-control" required>
+                </div>
+            </div>
+             <div class="form-row">
+                <div class="col form-group">
+                    <label for="">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                 <div class="col form-group">
+                    <label for="">Telefone</label>
+                    <input type="text" name="telefone" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col form-group">
+                    <label for="">Endereço_1</label>
+                    <input type="text" name="endereço_1" class="form-control" required>
+                </div>
+                 <div class="col form-group">
+                    <label for="">Endereço_2</label>
+                    <input type="text" name="endereço_2" class="form-control">
+                </div>
+            </div>
+             <div class="form-row">
+                <div class="col form-group">
+                    <label for="">Cidade</label>
+                    <input type="text" name="cidade" class="form-control" required>
+                </div>
+                 <div class="col form-group">
+                    <label for="">Estado</label>
+                    <input type="text" name="estado" class="form-control" required>
+                </div>
+                </div>
+                <div class="form-row">
+                    <label for="">Nota do Pedido</label>
+                    <textarea name="nota_pedido" rows="2" class="form-control"></textarea>                
+            </div>
+        </form>
+    </div>
+</div> <!-- card.// -->
+
+	</aside> <!-- col.// -->
+	<aside class="col-lg-6">
+
+		<div class="card">
+		<div class="card-body">
+		<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Produto</th>
+  <th scope="col" width="120">Quantidade</th>
+  <th scope="col" width="120">Preço</th>
+</tr>
+</thead>
+<tbody>
+
+{% for carrinho_item in carrinho_itens %}
+<tr>
+	<td>
+		<figure class="itemside align-items-center">
+			<div class="aside"><img src="{{ carrinho_item.produto.imagens.url }}" class="img-sm"></div>
+			<figcaption class="info">
+				<a href="{{ carrinho_item.produto.get_url }}" class="title text-dark">{{ carrinho_item.produto.nome_produto }}</a>
+				<p class="text-muted small">
+					{% if carrinho_item.variações.all %}
+						{% for item in carrinho_item.variações.all %}
+							{{ item.variação_categoria | capfirst }} : {{ item.valor_variação | capfirst }} <br>
+						{% endfor %}
+					{% endif %}
+			</figcaption>
+		</figure>
+	</td>
+	<td> 
+		<!-- col.// -->
+         <label for="">{{carrinho_item.quantidade}}</label>			
+	</td>
+	<td> 
+		<div class="price-wrap"> 
+			<var class="price">R$ {{ carrinho_item.sub_total }}</var> 
+			<small class="text-muted"> {{ carrinho_item.produto.preço }} cada </small> 
+		</div> <!-- price-wrap .// -->
+	</td>	
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+			<a href="./place-order.html" class="btn btn-primary btn-block"> Pagar </a>
+			<a href="{% url 'loja' %}" class="btn btn-light btn-block">Continuar Comprando</a>
+		</div> <!-- card-body.// -->
+		</div> <!-- card.// -->
+
+</aside> <!-- col.// -->
+
+
+</div> <!-- row.// -->
+<!-- ============================ COMPONENT 1 END .// ================================= -->
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

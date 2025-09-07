@@ -25,7 +25,7 @@
 <tr class="small text-uppercase">
   <th scope="col">Produto</th>
   <th scope="col" width="120">Quantidade</th>
-  <th scope="col" width="120">Price</th>
+  <th scope="col" width="120">Preço</th>
   <th scope="col" class="text-right" width="200"> </th>
 </tr>
 </thead>
@@ -70,7 +70,7 @@
 	<td> 
 		<div class="price-wrap"> 
 			<var class="price">R$ {{ carrinho_item.sub_total }}</var> 
-			<small class="text-muted"> {{ carrinho_item.produto.preço }} each </small> 
+			<small class="text-muted"> {{ carrinho_item.produto.preço }} cada </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
@@ -98,7 +98,7 @@
 			<p class="text-center mb-3">
 				<img src="{% static './images/misc/payments.png' %}" height="26">
 			</p>
-			<a href="./place-order.html" class="btn btn-primary btn-block"> Pagar </a>
+			<a href="{% url 'pagamento' %}" class="btn btn-primary btn-block"> Pagamento </a>
 			<a href="{% url 'loja' %}" class="btn btn-light btn-block">Continuar Comprando</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
