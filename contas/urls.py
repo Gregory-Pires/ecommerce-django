@@ -12,4 +12,6 @@ urlpatterns = [
     path('ativar/<uidb64>/<token>/', views.ativar, name='ativar'),
     path('esqueceusuasenha/', views.esqueceusuasenha, name='esqueceusuasenha'),
     path('resetsenha_validate/<uidb64>/<token>/', views.resetsenha_validate, name='resetsenha_validate'),
+    path('resetsenha/', views.resetsenha, name='resetsenha'),
+
 ]

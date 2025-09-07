@@ -121,5 +121,35 @@ def esqueceusuasenha(request):
 
     return render(request, 'contas/esqueceusuasenha.html')
 
-def resetsenha_validate(request):
-    return HttpResponse('ok')
+def resetsenha_validate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Conta._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Conta.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid'] = uid
+        messages.success(request, 'Por favor crie uma nova senha')
+        return redirect('resetsenha')
+    else:
+        messages.error(request, 'Esse link expirou!')
+        return redirect('login')
+    
+def resetsenha(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = Conta.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'Senha mudada com sucesso')
+            return redirect('login')
+        else:
+            messages.error(request, 'As senha precisam ser iguais!')
+            return redirect('resetsenha')
+    else:
+        return render(request, 'contas/resetsenha.html')
