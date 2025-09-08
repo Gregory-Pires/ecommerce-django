@@ -62,26 +62,54 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
-        
+
         if user is not None:
-            try:               
+            try:
                 carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
-                carrinho_item_existe = CarrinhoItem.objects.filter(carrinho=carrinho).exists()                
+                carrinho_item_existe = CarrinhoItem.objects.filter(carrinho=carrinho).exists()
+
                 if carrinho_item_existe:
-                    carrinho_item = CarrinhoItem.objects.filter(carrinho=carrinho)
-                    
-                    for item in carrinho_item:
-                        item.usuário = user
-                        item.save()
-            except:                           
+                    carrinho_items_sessao = CarrinhoItem.objects.filter(carrinho=carrinho)
+
+                    # 🔹 variações do carrinho da sessão
+                    variacoes_sessao = []
+                    for item in carrinho_items_sessao:
+                        variacoes_sessao.append(set(item.variações.all()))  # já vira set
+
+                    # 🔹 variações do carrinho do usuário
+                    carrinho_items_user = CarrinhoItem.objects.filter(usuário=user)
+                    ex_var_list = []
+                    id_list = []
+                    for item in carrinho_items_user:
+                        ex_var_list.append(set(item.variações.all()))
+                        id_list.append(item.id)
+
+                    # 🔹 compara sets e une carrinhos
+                    for pr in variacoes_sessao:
+                        if pr in ex_var_list:
+                            # se já existe, aumenta a quantidade
+                            index = ex_var_list.index(pr)
+                            item_id = id_list[index]
+                            item = CarrinhoItem.objects.get(id=item_id)
+                            item.quantidade += 1
+                            item.usuário = user
+                            item.save()
+                        else:
+                            # se não existe, só transfere o item de sessão para o usuário
+                            for item in carrinho_items_sessao:
+                                item.usuário = user
+                                item.carrinho = None  # desvincula do carrinho da sessão
+                                item.save()
+            except Carrinho.DoesNotExist:
                 pass
 
             auth.login(request, user)
-            messages.success(request, 'Você Entrou.')
+            messages.success(request, 'Você entrou com sucesso!')
             return redirect('painel')
         else:
-            messages.error(request, 'Credencias erradas')
+            messages.error(request, 'Credenciais incorretas.')
             return redirect('login')
+
     return render(request, 'contas/login.html')
 
 @login_required(login_url = 'login')

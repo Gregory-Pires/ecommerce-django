@@ -36,23 +36,23 @@
 					<div class="row">
 						<div class="item-option-select">
 							<h6>Cor</h6>
-								<select name="cor" class="form-control" required>
-									<option value="disabled selected">Selecione</option>
-									{% for i in produto_unico.variação_set.cores %}
-									<option value="{{ i.valor_variação | lower }}">{{ i.valor_variação | capfirst }}</option>
+							<select name="cor" class="form-control" required>
+								<option value="" disabled selected>Selecione</option>
+								{% for i in produto_unico.variação_set.cores %}
+								<option value="{{ i.valor_variação|lower }}">{{ i.valor_variação|capfirst }}</option>
 									{% endfor %}
-								</select>
+							</select>
 						</div>
 					</div> <!-- row.// -->
 					<div class="row">
 						<div class="item-option-select" class="form-control">
-							<h6>Tamanho</h6>
-								<select name="tamanho" class="form-control">
-									<option value="disabled selected">Selecione</option>
-									{% for i in produto_unico.variação_set.tamanhos %}
-									<option value="{{ i.valor_variação | lower }}">{{ i.valor_variação | capfirst }}</option>
-									{% endfor %}									
-								</select>
+						<h6>Tamanho</h6>
+							<select name="tamanho" class="form-control">
+								<option value="" disabled selected>Selecione</option>
+								{% for i in produto_unico.variação_set.tamanhos %}
+								<option value="{{ i.valor_variação|lower }}">{{ i.valor_variação|capfirst }}</option>
+								{% endfor %}
+							</select>
 						</div>
 					</div> <!-- row.// -->
 					<hr>

@@ -7,7 +7,7 @@ class Produto(models.Model):
     nome_produto     = models.CharField(max_length=200, unique=True)
     slug             = models.SlugField(max_length=200, unique=True)
     descrição        = models.TextField(max_length=500, blank=True)
-    preço            = models.FloatField()
+    preço            = models.DecimalField(max_digits=10, decimal_places=2)
     imagens          = models.ImageField(upload_to='photos/products')
     quantidade       = models.IntegerField()
     esta_disponível  = models.BooleanField(default=True)
