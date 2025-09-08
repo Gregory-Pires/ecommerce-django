@@ -118,10 +118,13 @@ def add_carrinho(request, produto_id):
         return redirect('carrinho')
 
 def remover_carrinho(request, produto_id, carrinho_item_id):
-    carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
     produto = get_object_or_404(Produto, id=produto_id)
     try:
-        carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho, id=carrinho_item_id)
+        if request.user.is_authenticated:
+            carrinho_item = CarrinhoItem.objects.get(produto=produto, usuário=request.user, id=carrinho_item_id)
+        else:
+            carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+            carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho, id=carrinho_item_id)
         if carrinho_item.quantidade > 1:
             carrinho_item.quantidade -= 1
             carrinho_item.save()
@@ -132,9 +135,12 @@ def remover_carrinho(request, produto_id, carrinho_item_id):
     return redirect('carrinho')
 
 def remover_carrinho_item(request, produto_id, carrinho_item_id):
-    carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
     produto = get_object_or_404(Produto, id=produto_id)
-    carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho, id=carrinho_item_id)
+    if request.user.is_authenticated:
+        carrinho_item = CarrinhoItem.objects.get(produto=produto, usuário=request.user, id=carrinho_item_id)
+    else:
+        carrinho = Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+        carrinho_item = CarrinhoItem.objects.get(produto=produto, carrinho=carrinho, id=carrinho_item_id)
     carrinho_item.delete()
     return redirect('carrinho')
 
