@@ -19,6 +19,7 @@ from django.core.mail import EmailMessage
 
 from carrinhos.views import _carrinho_id
 from carrinhos.models import Carrinho, CarrinhoItem
+import requests
 
 def cadastro(request):
     if request.method == 'POST':
@@ -105,7 +106,15 @@ def login(request):
 
             auth.login(request, user)
             messages.success(request, 'Você entrou com sucesso!')
-            return redirect('painel')
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)                
+            except:
+                return redirect('painel')
         else:
             messages.error(request, 'Credenciais incorretas.')
             return redirect('login')

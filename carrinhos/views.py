@@ -168,8 +168,11 @@ def carrinho(request, total=0, quantidade=0, carrinho_itens=None):
 @login_required(login_url='login')
 def checkout(request, total=0, quantidade=0, carrinho_itens=None):
     try:
-        carrinho= Carrinho.objects.get(carrinho_id=_carrinho_id(request))
-        carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esta_ativo=True)
+        if request.user.is_authenticated:
+              carrinho_itens = CarrinhoItem.objects.filter(usuário=request.user, esta_ativo=True)
+        else:
+            carrinho= Carrinho.objects.get(carrinho_id=_carrinho_id(request))
+            carrinho_itens = CarrinhoItem.objects.filter(carrinho=carrinho, esta_ativo=True)
         for carrinho_item in carrinho_itens:
             total += (carrinho_item.produto.preço * carrinho_item.quantidade)
             quantidade += carrinho_item.quantidade
