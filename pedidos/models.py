@@ -43,7 +43,7 @@ class Pedido(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.usuário.nome
+        return self.nome
     
 class ProdutoPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
