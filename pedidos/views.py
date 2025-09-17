@@ -7,6 +7,9 @@ from .models import Pedido
 
 # Create your views here.
 
+def pagamentos(request):
+    return render(request, 'pedidos/pagamentos.html')
+
 def fazer_pedido(request, total=0, quantidade=0):
     current_user = request.user
 
