@@ -32,8 +32,8 @@ def fazer_pedido(request, total=0, quantidade=0):
             data.sobrenome = form.cleaned_data['sobrenome'] 
             data.telefone = form.cleaned_data['telefone'] 
             data.email = form.cleaned_data['email'] 
-            data.endereço_1 = form.cleaned_data['endereço_1'] 
-            data.endereço_2 = form.cleaned_data['endereço_2'] 
+            data.rua = form.cleaned_data['rua'] 
+            data.número = form.cleaned_data['número'] 
             data.estado = form.cleaned_data['estado'] 
             data.cidade = form.cleaned_data['cidade'] 
             data.nota_pedido = form.cleaned_data['nota_pedido'] 
@@ -49,6 +49,13 @@ def fazer_pedido(request, total=0, quantidade=0):
             número_pedido = current_date + str(data.id)
             data.número_pedido = número_pedido
             data.save()
-            return redirect('checkout')
+
+            pedido = Pedido.objects.get(usuário=current_user, é_pedido=False, número_pedido=número_pedido)
+            context = {
+                'pedido': pedido,
+                'carrinho_itens': carrinho_itens,
+                'total': total,
+            }
+            return render(request, 'pedidos/pagamentos.html', context)
     else:
         return redirect('checkout')
