@@ -5,6 +5,7 @@ from .forms import PedidoForm
 import datetime
 from .models import Pedido, Pagamento, ProdutoPedido
 import json
+from loja.models import Produto
 
 # Create your views here.
 
@@ -43,6 +44,13 @@ def pagamentos(request):
         produtopedido = ProdutoPedido.objects.get(id=produtopedido.id)
         produtopedido.variações.set(variação_produto)
         produtopedido.save
+
+    
+        produto = Produto.objects.get(id=item.produto_id)
+        produto.quantidade -= item.quantidade
+        produto.save()
+
+    CarrinhoItem.objects.filter(usuário=request.user).delete()
 
     
     return render(request, 'pedidos/pagamentos.html')
