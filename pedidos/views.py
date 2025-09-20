@@ -38,7 +38,11 @@ def pagamentos(request):
         produtopedido.ordenado = True
         produtopedido.save()
 
-
+        carrinho_item = CarrinhoItem.objects.get(id=item.id)
+        variação_produto = carrinho_item.variações.all()
+        produtopedido = ProdutoPedido.objects.get(id=produtopedido.id)
+        produtopedido.variações.set(variação_produto)
+        produtopedido.save
 
     
     return render(request, 'pedidos/pagamentos.html')
