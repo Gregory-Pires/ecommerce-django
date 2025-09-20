@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from carrinhos.models import CarrinhoItem
 from .forms import PedidoForm
 import datetime
-from .models import Pedido, Pagamento
+from .models import Pedido, Pagamento, ProdutoPedido
 import json
 
 # Create your views here.
@@ -24,6 +24,23 @@ def pagamentos(request):
     pedido.pagamento = pagamento
     pedido.é_pedido = True
     pedido.save()
+
+    carrinho_itens = CarrinhoItem.objects.filter(usuário=request.user)
+
+    for item in carrinho_itens:
+        produtopedido = ProdutoPedido()
+        produtopedido.pedido_id = pedido.id
+        produtopedido.pagamento = pagamento
+        produtopedido.usuário_id = item.usuário.id
+        produtopedido.produto_id = item.produto_id
+        produtopedido.quantidade = item.quantidade
+        produtopedido.preço_produto = item.produto.preço
+        produtopedido.ordenado = True
+        produtopedido.save()
+
+
+
+    
     return render(request, 'pedidos/pagamentos.html')
 
 def fazer_pedido(request, total=0, quantidade=0):

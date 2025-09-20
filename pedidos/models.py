@@ -43,7 +43,7 @@ class Pedido(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def nome_completo(self):
-        return f'{self.nome} {self.número}'
+        return f'{self.nome} {self.sobrenome}'
 
     def endereço_completo(self):
         return f'{self.rua}, {self.número}'
@@ -56,12 +56,10 @@ class ProdutoPedido(models.Model):
     pagamento = models.ForeignKey(Pagamento, on_delete=models.SET_NULL, blank=True, null=True)
     usuário = models.ForeignKey(Conta, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-    variação = models.ForeignKey(Variação, on_delete=models.CASCADE)
-    cor = models.CharField(max_length=50)
-    tamanho = models.CharField(max_length=50)
+    variações = models.ManyToManyField(Variação, blank=True)
     quantidade = models.IntegerField()
     preço_produto = models.FloatField()
-    pedido = models.BooleanField(default=False)
+    ordenado = models.BooleanField(default=False)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
