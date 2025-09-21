@@ -1,6 +1,7 @@
 from django.db import models
 from categoria.models import Categoria
 from django.urls import reverse
+from contas.models import Conta
 # Create your models here.
 
 class Produto(models.Model):
@@ -44,3 +45,17 @@ class Variação(models.Model):
    
     def __str__(self):
         return self.valor_variação
+    
+class NotaAvaliacao(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    usuário = models.ForeignKey(Conta, on_delete=models.CASCADE)
+    assunto = models.CharField(max_length=100, blank=True)
+    avaliação = models.TextField(max_length=500, blank=True)
+    nota = models.FloatField()
+    ip = models.CharField(max_length=20, blank=True)
+    status = models.BooleanField(default=True)
+    criada_em = models.DateTimeField(auto_now_add=True)
+    atualizada_em = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.assunto
