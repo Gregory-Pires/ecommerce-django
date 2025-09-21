@@ -134,6 +134,7 @@
 	var csrftoken = getCookie('csrftoken');
 	var pedidoID = "{{ pedido.número_pedido }}";
 	var payment_method = 'PayPal'
+	var redirect_url = "{% url 'pedido_completo' %}"
 
     paypal.Buttons({
         createOrder: function(data, actions) {
@@ -163,6 +164,10 @@
 							status: details.status,
 						})
 					})
+					.then((response) => response.json())
+					.then((data) => {
+						window.location.href = redirect_url + '?número_pedido='+data.número_pedido+'&pagamento_id'+data.transID;
+					});
 				}
             });
         }

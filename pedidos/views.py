@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from carrinhos.models import CarrinhoItem
 from .forms import PedidoForm
 import datetime
@@ -63,8 +63,11 @@ def pagamentos(request):
     send_email = EmailMessage(mail_subject, message, to=[to_email])
     send_email.send()
 
-    
-    return render(request, 'pedidos/pagamentos.html')
+    data = {
+        'número_pedido': pedido.número_pedido,
+        'transID': pagamento.pagamento_id,
+    }    
+    return JsonResponse(data)
 
 def fazer_pedido(request, total=0, quantidade=0):
     current_user = request.user
@@ -115,3 +118,6 @@ def fazer_pedido(request, total=0, quantidade=0):
             return render(request, 'pedidos/pagamentos.html', context)
     else:
         return redirect('checkout')
+    
+def pedido_completo(request):
+    return render(request, 'pedidos/pedido_completo.html')
