@@ -6,6 +6,8 @@ import datetime
 from .models import Pedido, Pagamento, ProdutoPedido
 import json
 from loja.models import Produto
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -43,7 +45,7 @@ def pagamentos(request):
         variação_produto = carrinho_item.variações.all()
         produtopedido = ProdutoPedido.objects.get(id=produtopedido.id)
         produtopedido.variações.set(variação_produto)
-        produtopedido.save
+        produtopedido.save()
 
     
         produto = Produto.objects.get(id=item.produto_id)
@@ -51,6 +53,15 @@ def pagamentos(request):
         produto.save()
 
     CarrinhoItem.objects.filter(usuário=request.user).delete()
+
+    mail_subject = 'Muito obrigado por comprar conosco!'
+    message = render_to_string('pedidos/pedido_recebido_email.html', {
+        'user': request.user,
+        'pedido': pedido       
+    })
+    to_email = request.user.email
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
 
     
     return render(request, 'pedidos/pagamentos.html')

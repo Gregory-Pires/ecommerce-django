@@ -11,7 +11,7 @@ class ProdutoPedidoInline(admin.TabularInline):
 class PedidoAdm(admin.ModelAdmin):
     list_display = ['número_pedido', 'nome_completo', 'telefone', 'email', 'cidade', 'total_pedido', 'status', 'é_pedido', 'criado_em']
     list_filter = ['status', 'é_pedido']
-    search_fields = ['número_pedido', ' nome', 'sobrenome','telefone', 'email']
+    search_fields = ['número_pedido', 'nome', 'sobrenome','telefone', 'email']
     list_per_page = 20
     inlines = [ProdutoPedidoInline]
 
