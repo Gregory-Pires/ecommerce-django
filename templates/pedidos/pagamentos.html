@@ -166,7 +166,7 @@
 					})
 					.then((response) => response.json())
 					.then((data) => {
-						window.location.href = redirect_url + '?número_pedido='+data.número_pedido+'&pagamento_id'+data.transID;
+						window.location.href = redirect_url + '?número_pedido='+data.número_pedido+'&pagamento_id='+data.transID;
 					});
 				}
             });

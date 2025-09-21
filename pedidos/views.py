@@ -120,4 +120,35 @@ def fazer_pedido(request, total=0, quantidade=0):
         return redirect('checkout')
     
 def pedido_completo(request):
-    return render(request, 'pedidos/pedido_completo.html')
+    número_pedido = request.GET.get('número_pedido')
+    transID = request.GET.get('pagamento_id')
+
+    try:
+        pedido = Pedido.objects.get(número_pedido=número_pedido, é_pedido=True)
+        produtos_pedido = ProdutoPedido.objects.filter(pedido_id=pedido.id)
+        
+        total_item = 0
+        total = 0
+        
+        for item in produtos_pedido:
+            item.total_item = item.preço_produto * item.quantidade
+        
+        for i in produtos_pedido:
+            total += i.preço_produto * i.quantidade
+        
+        
+        
+        pagamento = Pagamento.objects.get(pagamento_id=transID)
+
+        context = {
+            'pedido': pedido,
+            'produtos_pedido': produtos_pedido,
+            'número_pedido': pedido.número_pedido,
+            'transID': pagamento.pagamento_id, 
+            'pagamento': pagamento,
+            'total_item': total_item,
+            'total': total,     
+        }
+        return render(request, 'pedidos/pedido_completo.html', context)
+    except (Pagamento.DoesNotExist, Pedido.DoesNotExist):
+        return redirect('home')
