@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from .forms import CadastroForm
 from .models import Conta
+from pedidos.models import Pedido
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -145,7 +146,12 @@ def ativar(request, uidb64, token):
 
 @login_required(login_url = 'login')
 def painel(request):
-    return render(request, 'contas/painel.html')
+    pedidos = Pedido.objects.order_by('criado_em').filter(usuário_id=request.user.id, é_pedido=True)
+    pedidos_contador = pedidos.count()
+    context = {
+        'pedidos_contador': pedidos_contador,
+    }
+    return render(request, 'contas/painel.html', context)
 
 def esqueceusuasenha(request):
     if request.method == 'POST':
