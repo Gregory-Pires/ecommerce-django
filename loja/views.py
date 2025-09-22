@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Produto
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Produto, NotaAvaliacao
 from categoria.models import Categoria
 from carrinhos.models import CarrinhoItem
 from django.db.models import Q
@@ -8,6 +8,8 @@ from carrinhos.views import _carrinho_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from django.http import HttpResponse
+from .forms import ReviewForm
+from django.contrib import messages
 # Create your views here.
 
 def loja(request, slug_categoria=None):
@@ -57,3 +59,26 @@ def pesquisa(request):
         'contador_produtos': contador_produtos,
     }
     return render(request, 'loja/loja.html', context)
+
+def enviar_avaliacao(request, produto_id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        try:
+            avaliacoes = NotaAvaliacao.objects.get(usuário__id=request.user.id, produto__id=produto_id)
+            form = ReviewForm(request.POST, instance=avaliacoes)
+            form.save()
+            messages.success(request, 'Muito obrigado! sua avaliação foi atualizada.')
+            return redirect(url)
+        except NotaAvaliacao.DoesNotExist:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = NotaAvaliacao()
+                data.assunto = form.cleaned_data['assunto']
+                data.nota = form.cleaned_data['nota']
+                data.avaliação = form.cleaned_data['avaliação']
+                data.ip = request.META.get('REMOTE_ADDR')
+                data.produto_id = produto_id
+                data.usuário_id = request.user.id
+                data.save()
+                messages.success(request, 'Muito obrigado! sua avaliação foi enviada.')
+                return redirect(url)

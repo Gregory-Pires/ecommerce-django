@@ -73,12 +73,9 @@
 <div class="row">
 			<div class="col-md-9">
 
-	<header class="section-heading">
-		<h3>Avaliação de Clientes </h3>  
-		
-	</header>
+	
 
-	<form action="" method="POST">
+	<form action="{% url 'enviar_avaliacao' produto_unico.id  %}" method="POST">
 		{% csrf_token %}
 		<h5>Escreva sua Avaliação</h5>
 		<div>
@@ -104,10 +101,19 @@
 			Avaliação:
 			<textarea name="avaliação" rows="4" class="form-control"></textarea>
 			<br>
+			{% if user.is_authenticated %}
 			<input type="submit" value="Enviar Avaliação" class="btn btn-primary">
+			{% else %}
+			<p>Você precisa estar logado para enviar avaliações. <span><a href="{% url 'login' %}">Logar agora</a></span></p>
+			{% endif %}
 		</div>
+{% include 'includes/alerts.html' %}
 	</form>
 	<br>
+	<header class="section-heading">
+		<h3>Avaliação dos Clientes </h3>  
+		
+	</header>
 
 	<article class="box mb-3">
 		<div class="icontext w-100">
