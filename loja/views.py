@@ -44,9 +44,12 @@ def produto_detail(request, slug_categoria, slug_produto):
     except Exception as e:
         raise e
     
-    try:
-        produtopedido = ProdutoPedido.objects.filter(usuário=request.user, produto_id=produto_unico.id).exists()
-    except ProdutoPedido.DoesNotExist:
+    if request.user.is_authenticated:
+        try:
+            produtopedido = ProdutoPedido.objects.filter(usuário=request.user, produto_id=produto_unico.id).exists()
+        except ProdutoPedido.DoesNotExist:
+            produtopedido = None
+    else:
         produtopedido = None
     
     avaliacoes = NotaAvaliacao.objects.filter(produto_id=produto_unico.id, status=True)
