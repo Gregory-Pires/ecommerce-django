@@ -2,6 +2,7 @@ from django.db import models
 from categoria.models import Categoria
 from django.urls import reverse
 from contas.models import Conta
+from django.db.models import Avg
 # Create your models here.
 
 class Produto(models.Model):
@@ -21,6 +22,12 @@ class Produto(models.Model):
     
     def __str__(self):
         return self.nome_produto
+    def notaMedia(self):
+        notas = NotaAvaliacao.objects.filter(produto=self, status=True).aggregate(average=Avg('nota'))
+        avg = 0
+        if notas['average'] is not None:
+            avg = float(notas['average'])
+        return avg
     
 class VariationManager(models.Manager):
     def cores(self):
@@ -58,4 +65,5 @@ class NotaAvaliacao(models.Model):
     atualizada_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.assunto
+        return self.assunto    
+    

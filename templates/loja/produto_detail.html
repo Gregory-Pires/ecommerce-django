@@ -78,6 +78,7 @@
 	<form action="{% url 'enviar_avaliacao' produto_unico.id  %}" method="POST">
 		{% csrf_token %}
 		<h5>Escreva sua Avaliação</h5>
+		{{produto_unico.notaMedia}}
 		<div>
 			<!--Avaliação por Estrelas-->
 			<label for="">Como você avalia esse produto?</label>
