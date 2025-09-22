@@ -64,6 +64,9 @@ class Conta(AbstractBaseUser):
 
     objects = MyContaManager()
 
+    def nome_completo(self):
+       return f'{self.nome} {self.sobrenome}'
+
     def __str__(self):
      return self.email
 

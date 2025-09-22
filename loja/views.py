@@ -48,11 +48,14 @@ def produto_detail(request, slug_categoria, slug_produto):
         produtopedido = ProdutoPedido.objects.filter(usuário=request.user, produto_id=produto_unico.id).exists()
     except ProdutoPedido.DoesNotExist:
         produtopedido = None
+    
+    avaliacoes = NotaAvaliacao.objects.filter(produto_id=produto_unico.id, status=True)
 
     context = {
         'produto_unico': produto_unico,
         'in_carrinho': in_carrinho,
         'produtopedido': produtopedido,
+        'avaliacoes': avaliacoes,
     }
     return render(request, 'loja/produto_detail.html', context)
 
