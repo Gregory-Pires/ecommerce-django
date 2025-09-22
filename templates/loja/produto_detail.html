@@ -24,6 +24,38 @@
 				<article class="content-body">
 
 				<h2 class="title">{{ produto_unico.nome_produto }}</h2>
+					<div class="rating-star">
+						{% with media=produto_unico.notaMedia %}
+						<span>
+							<!-- Primeira estrela -->
+							<i class="{% if media >= 1 %}fa-solid fa-star
+									{% elif media >= 0.5 %}fa-solid fa-star-half-stroke
+									{% else %}fa-regular fa-star{% endif %}"></i>
+							
+							<!-- Segunda estrela -->
+							<i class="{% if media >= 2 %}fa-solid fa-star
+									{% elif media >= 1.5 %}fa-solid fa-star-half-stroke
+									{% else %}fa-regular fa-star{% endif %}"></i>
+							
+							<!-- Terceira estrela -->
+							<i class="{% if media >= 3 %}fa-solid fa-star
+									{% elif media >= 2.5 %}fa-solid fa-star-half-stroke
+									{% else %}fa-regular fa-star{% endif %}"></i>
+							
+							<!-- Quarta estrela -->
+							<i class="{% if media >= 4 %}fa-solid fa-star
+									{% elif media >= 3.5 %}fa-solid fa-star-half-stroke
+									{% else %}fa-regular fa-star{% endif %}"></i>
+							
+							<!-- Quinta estrela -->
+							<i class="{% if media >= 5 %}fa-solid fa-star
+									{% elif media >= 4.5 %}fa-solid fa-star-half-stroke
+									{% else %}fa-regular fa-star{% endif %}"></i>
+							<span>{{produto_unico.countAvaliacao}} Avaliações</span>
+
+						</span>
+						{% endwith %}
+					</div>
 
 				<div class="mb-3"> 
 					<var class="price h4">R$ {{produto_unico.preço}}</var> 
@@ -78,7 +110,6 @@
 	<form action="{% url 'enviar_avaliacao' produto_unico.id  %}" method="POST">
 		{% csrf_token %}
 		<h5>Escreva sua Avaliação</h5>
-		{{produto_unico.notaMedia}}
 		<div>
 			<!--Avaliação por Estrelas-->
 			<label for="">Como você avalia esse produto?</label>
@@ -116,7 +147,38 @@
 	</form>
 	<br>
 	<header class="section-heading">
-		<h3>Avaliação dos Clientes </h3>  
+		<h3>Avaliação dos Clientes </h3> 
+			<div class="rating-star">
+				{% with media=produto_unico.notaMedia %}
+				<span>
+					<!-- Primeira estrela -->
+					<i class="{% if media >= 1 %}fa-solid fa-star
+							{% elif media >= 0.5 %}fa-solid fa-star-half-stroke
+							{% else %}fa-regular fa-star{% endif %}"></i>
+					
+					<!-- Segunda estrela -->
+					<i class="{% if media >= 2 %}fa-solid fa-star
+							{% elif media >= 1.5 %}fa-solid fa-star-half-stroke
+							{% else %}fa-regular fa-star{% endif %}"></i>
+					
+					<!-- Terceira estrela -->
+					<i class="{% if media >= 3 %}fa-solid fa-star
+							{% elif media >= 2.5 %}fa-solid fa-star-half-stroke
+							{% else %}fa-regular fa-star{% endif %}"></i>
+					
+					<!-- Quarta estrela -->
+					<i class="{% if media >= 4 %}fa-solid fa-star
+							{% elif media >= 3.5 %}fa-solid fa-star-half-stroke
+							{% else %}fa-regular fa-star{% endif %}"></i>
+					
+					<!-- Quinta estrela -->
+					<i class="{% if media >= 5 %}fa-solid fa-star
+							{% elif media >= 4.5 %}fa-solid fa-star-half-stroke
+							{% else %}fa-regular fa-star{% endif %}"></i>
+					<span>{{produto_unico.countAvaliacao}} Avaliações</span>
+				</span>
+				{% endwith %}
+			</div>
 		
 	</header>
 

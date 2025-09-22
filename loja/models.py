@@ -2,7 +2,7 @@ from django.db import models
 from categoria.models import Categoria
 from django.urls import reverse
 from contas.models import Conta
-from django.db.models import Avg
+from django.db.models import Avg, Count
 # Create your models here.
 
 class Produto(models.Model):
@@ -29,6 +29,14 @@ class Produto(models.Model):
             avg = float(notas['average'])
         return avg
     
+    def countAvaliacao(self):
+        notas = NotaAvaliacao.objects.filter(produto=self, status=True).aggregate(count=Count('id'))
+        count = 0
+        if notas['count'] is not None:
+            count = int(notas['count'])
+        return count
+
+
 class VariationManager(models.Manager):
     def cores(self):
         return super(VariationManager, self).filter(variação_categoria='cor', esta_ativo=True)
