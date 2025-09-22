@@ -10,6 +10,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from .forms import ReviewForm
 from django.contrib import messages
+from pedidos.models import ProdutoPedido
 # Create your views here.
 
 def loja(request, slug_categoria=None):
@@ -42,9 +43,16 @@ def produto_detail(request, slug_categoria, slug_produto):
         in_carrinho = CarrinhoItem.objects.filter(carrinho__carrinho_id=_carrinho_id(request), produto=produto_unico).exists()
     except Exception as e:
         raise e
+    
+    try:
+        produtopedido = ProdutoPedido.objects.filter(usuário=request.user, produto_id=produto_unico.id).exists()
+    except ProdutoPedido.DoesNotExist:
+        produtopedido = None
+
     context = {
         'produto_unico': produto_unico,
-        'in_carrinho': in_carrinho
+        'in_carrinho': in_carrinho,
+        'produtopedido': produtopedido,
     }
     return render(request, 'loja/produto_detail.html', context)
 

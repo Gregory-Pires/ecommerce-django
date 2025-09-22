@@ -102,9 +102,13 @@
 			<textarea name="avaliação" rows="4" class="form-control"></textarea>
 			<br>
 			{% if user.is_authenticated %}
-			<input type="submit" value="Enviar Avaliação" class="btn btn-primary">
+				{% if produtopedido %}
+					<input type="submit" value="Enviar Avaliação" class="btn btn-primary">
+				{% else %}
+					<p>Você precisa comprar esse produto para enviar uma avaliação.</p>
+				{% endif %}
 			{% else %}
-			<p>Você precisa estar logado para enviar avaliações. <span><a href="{% url 'login' %}">Logar agora</a></span></p>
+				<p>Você precisa estar logado para enviar uma avaliação. <span><a href="{% url 'login' %}">Logar agora</a></span></p>
 			{% endif %}
 		</div>
 {% include 'includes/alerts.html' %}
