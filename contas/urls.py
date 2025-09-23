@@ -14,4 +14,5 @@ urlpatterns = [
     path('resetsenha_validate/<uidb64>/<token>/', views.resetsenha_validate, name='resetsenha_validate'),
     path('resetsenha/', views.resetsenha, name='resetsenha'),
 
+    path('meus_pedidos/', views.meus_pedidos, name='meus_pedidos'),
 ]

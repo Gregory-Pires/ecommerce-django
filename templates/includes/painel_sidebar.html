@@ -1,8 +1,8 @@
 <aside class="col-md-3">
 		<!--   SIDEBAR   -->
 		<ul class="list-group">
-			<a class="list-group-item active" href="#"> Painel </a>
-			<a class="list-group-item" href="#"> Minhas Compras </a>
+			<a class="list-group-item {% if '/conta/' == request.path %}active{% endif %}" href="{% url 'painel' %}"> Painel </a>
+			<a class="list-group-item {% if '/meus_pedidos/' in request.path %}active{% endif %}" href="{% url 'meus_pedidos' %}"> Meus Pedidos </a>
 			<a class="list-group-item" href="#"> Edit Profile </a>
 			<a class="list-group-item" href="#"> Mudar Senha </a>			
 		</ul>

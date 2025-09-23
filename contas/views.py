@@ -212,3 +212,11 @@ def resetsenha(request):
             return redirect('resetsenha')
     else:
         return render(request, 'contas/resetsenha.html')
+    
+
+def meus_pedidos(request):
+    pedidos = Pedido.objects.filter(usuário=request.user, é_pedido=True).order_by('-criado_em')
+    context = {
+        'pedidos': pedidos,
+    }
+    return render(request, 'contas/meus_pedidos.html', context)
