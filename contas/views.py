@@ -220,3 +220,6 @@ def meus_pedidos(request):
         'pedidos': pedidos,
     }
     return render(request, 'contas/meus_pedidos.html', context)
+
+def editar_perfil(request):
+    return render(request, 'contas/editar_perfil.html')

@@ -15,4 +15,5 @@ urlpatterns = [
     path('resetsenha/', views.resetsenha, name='resetsenha'),
 
     path('meus_pedidos/', views.meus_pedidos, name='meus_pedidos'),
+    path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
 ]
