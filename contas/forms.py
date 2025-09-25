@@ -1,5 +1,5 @@
 from django import forms
-from .models import Conta
+from .models import Conta, PerfilUsuario
 import re
 
 class CadastroForm(forms.ModelForm):
@@ -87,6 +87,27 @@ class CadastroForm(forms.ModelForm):
         for field in self.fields:    
             self.fields[field].widget.attrs['class'] = 'form-control'
 
+class UsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Conta
+        fields = ('nome', 'sobrenome', 'numero_telefone', 'cpf')
     
+    def __init__(self, *args, **kwargs):
+        super(UsuarioForm, self).__init__(*args, **kwargs)
+        for field in self.fields:    
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+class PerfilUsuarioForm(forms.ModelForm):
+    foto_perfil = forms.ImageField(required=False, error_messages = {'inválido':{"Apenas arquivos de imagens"}}, widget=forms.FileInput)
+    class Meta:
+        model = PerfilUsuario
+        fields = ('estado', 'cidade', 'rua', 'número', 'foto_perfil')
+    
+    def __init__(self, *args, **kwargs):
+        super(PerfilUsuarioForm, self).__init__(*args, **kwargs)
+        for field in self.fields:    
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
 
         

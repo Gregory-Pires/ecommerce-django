@@ -1,7 +1,7 @@
 
-from django.shortcuts import render, redirect
-from .forms import CadastroForm
-from .models import Conta
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import CadastroForm, UsuarioForm, PerfilUsuarioForm
+from .models import Conta, PerfilUsuario
 from pedidos.models import Pedido
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
@@ -222,4 +222,21 @@ def meus_pedidos(request):
     return render(request, 'contas/meus_pedidos.html', context)
 
 def editar_perfil(request):
-    return render(request, 'contas/editar_perfil.html')
+    perfilusuario = get_object_or_404(PerfilUsuario, usuário=request.user)
+    if request.method == 'POST':
+        usuario_form = UsuarioForm(request.POST, instance=request.user)
+        perfil_form = PerfilUsuarioForm(request.POST, request.FILES, instance=perfilusuario)
+        if usuario_form.is_valid() and perfil_form.is_valid():
+            usuario_form.save()
+            perfil_form.save()
+            messages.success(request, 'Seu perfil foi atualizado.')
+            return redirect('editar_perfil')
+    else:
+        usuario_form = UsuarioForm(instance=request.user)
+        perfil_form = PerfilUsuarioForm(instance=perfilusuario)
+    context = {
+        'usuario_form': usuario_form,
+        'perfil_form': perfil_form,
+        'perfilusuario': perfilusuario,
+    }
+    return render(request, 'contas/editar_perfil.html', context)
