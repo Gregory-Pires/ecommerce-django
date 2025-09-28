@@ -79,12 +79,12 @@ class Conta(AbstractBaseUser):
 class PerfilUsuario(models.Model):
    usuário = models.OneToOneField(Conta, on_delete=models.CASCADE)
    rua = models.CharField(blank=True, max_length=100)
-   número = models.IntegerField()
+   número = models.IntegerField(blank=True, null=True)
    foto_perfil = models.ImageField(blank=True, upload_to='userprofile')
-   cidade = models.CharField(blank=tuple, max_length=20)
-   estado = models.CharField(blank=tuple, max_length=20)
+   cidade = models.CharField(blank=True, max_length=20)
+   estado = models.CharField(blank=True, max_length=20)
 
-   def str (self):
+   def __str__ (self):
       return self.usuário.nome
    
    def endereco_compelto(self):

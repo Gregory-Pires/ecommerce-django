@@ -37,6 +37,12 @@ def cadastro(request):
             user = Conta.objects.create_user(nome=nome, sobrenome=sobrenome, email=email, numero_telefone=numero_telefone, cpf=cpf, nome_usuário=nome_usuário, password=password )
             user.save()
 
+            #Cria Perfil de Usuário
+            perfil = PerfilUsuario()
+            perfil.usuário_id = user.id
+            perfil.foto_perfil = 'padrao/usuario-padrao.jpg'
+            perfil.save()
+
             #USER actvation
             current_site = get_current_site(request)
             mail_subject = 'Por favor ative sua conta'
@@ -50,7 +56,7 @@ def cadastro(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
             #messages.success(request, 'Muito obrigado por se cadastrar conosco. Enviamos um email para a ativação da conta. Por favor verifique seu email')
-            return redirect('/contas/login/?command=ativacao&email='+email)
+            return redirect('/conta/login/?command=ativacao&email='+email)
     else:       
         form = CadastroForm()
     context = {
