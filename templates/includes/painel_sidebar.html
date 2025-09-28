@@ -4,9 +4,9 @@
 			<a class="list-group-item {% if '/conta/' == request.path %}active{% endif %}" href="{% url 'painel' %}"> Painel </a>
 			<a class="list-group-item {% if '/meus_pedidos/' in request.path %}active{% endif %}" href="{% url 'meus_pedidos' %}"> Meus Pedidos </a>
 			<a class="list-group-item {% if '/editar_perfil/' in request.path %}active{% endif %}" href="{% url 'editar_perfil' %}"> Editar Perfil </a>
-			<a class="list-group-item" href="#"> Mudar Senha </a>			
+			<a class="list-group-item {% if '/mudar_senha/' in request.path %}active{% endif %}" href="{% url 'mudar_senha' %}"> Mudar Senha </a>			
 		</ul>
 		<br>
-		<a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
+		<a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Desconectar</span> </a> 
 		<!--   SIDEBAR .//END   -->
 	</aside>

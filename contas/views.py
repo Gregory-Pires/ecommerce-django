@@ -220,6 +220,7 @@ def resetsenha(request):
         return render(request, 'contas/resetsenha.html')
     
 
+@login_required(login_url='login')
 def meus_pedidos(request):
     pedidos = Pedido.objects.filter(usuário=request.user, é_pedido=True).order_by('-criado_em')
     context = {
@@ -227,6 +228,7 @@ def meus_pedidos(request):
     }
     return render(request, 'contas/meus_pedidos.html', context)
 
+@login_required(login_url='login')
 def editar_perfil(request):
     perfilusuario = get_object_or_404(PerfilUsuario, usuário=request.user)
     if request.method == 'POST':
@@ -246,3 +248,29 @@ def editar_perfil(request):
         'perfilusuario': perfilusuario,
     }
     return render(request, 'contas/editar_perfil.html', context)
+
+@login_required(login_url='login')
+def mudar_senha(request):
+    if request.method == 'POST':
+        senha_atual = request.POST['senha_atual']
+        senha_nova = request.POST['senha_nova']
+        confirmar_senha = request.POST['confirmar_senha']
+
+        usuario = Conta.objects.get(nome_usuário__exact=request.user.nome_usuário)
+
+        if senha_nova == confirmar_senha:
+            success = usuario.check_password(senha_atual)
+            if success:
+                usuario.set_password(senha_nova)
+                usuario.save()
+                #auth.logout(request)
+                messages.success(request, 'Senha atualizada com sucesso.')
+                return redirect('mudar_senha')
+            else:
+                messages.error(request, 'Por favor digite a senha atual correta')
+                return redirect('mudar_senha')
+        else:
+            messages.error(request, 'As senhas não coincidem!')
+            return redirect('mudar_senha')
+
+    return render(request, 'contas/mudar_senha.html')

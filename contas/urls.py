@@ -16,4 +16,5 @@ urlpatterns = [
 
     path('meus_pedidos/', views.meus_pedidos, name='meus_pedidos'),
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
+    path('mudar_senha/', views.mudar_senha, name='mudar_senha'),
 ]
