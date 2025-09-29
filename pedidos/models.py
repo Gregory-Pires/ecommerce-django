@@ -64,4 +64,5 @@ class ProdutoPedido(models.Model):
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.produto.nome_produto
+        return self.produto.nome_produto   
+

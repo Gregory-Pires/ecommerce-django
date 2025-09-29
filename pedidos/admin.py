@@ -18,3 +18,4 @@ class PedidoAdm(admin.ModelAdmin):
 admin.site.register(Pagamento)
 admin.site.register(Pedido, PedidoAdm)
 admin.site.register(ProdutoPedido)
+

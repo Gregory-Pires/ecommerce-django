@@ -73,5 +73,12 @@ class NotaAvaliacao(models.Model):
     atualizada_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.assunto    
+        return self.assunto 
+
+class GaleriaProduto(models.Model):
+    produto = models.ForeignKey(Produto, default=None, on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to='loja/produtos', max_length=255)
+
+    def __str__(self):
+        return self.produto.nome_produto   
     
