@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CadastroForm, UsuarioForm, PerfilUsuarioForm
 from .models import Conta, PerfilUsuario
-from pedidos.models import Pedido
+from pedidos.models import Pedido, ProdutoPedido
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -274,3 +274,25 @@ def mudar_senha(request):
             return redirect('mudar_senha')
 
     return render(request, 'contas/mudar_senha.html')
+
+
+@login_required(login_url='login')
+def detalhes_pedido(request, pedido_id):
+    detalhes_pedido = ProdutoPedido.objects.filter(pedido__número_pedido=pedido_id)
+    pedido = Pedido.objects.get(número_pedido=pedido_id)
+    total = 0
+    total_item = 0
+
+    for i in detalhes_pedido:
+        total += i.preço_produto * i.quantidade
+
+    for item in detalhes_pedido:
+        item.total_item = item.preço_produto * item.quantidade
+
+    context = {
+        'detalhes_pedido': detalhes_pedido,
+        'pedido': pedido,
+        'total': total,
+        'total_item': total_item,
+    }
+    return render(request, 'contas/detalhes_pedido.html', context)
