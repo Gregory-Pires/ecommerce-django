@@ -154,8 +154,12 @@ def ativar(request, uidb64, token):
 def painel(request):
     pedidos = Pedido.objects.order_by('criado_em').filter(usuário_id=request.user.id, é_pedido=True)
     pedidos_contador = pedidos.count()
+
+    perfilusuario = PerfilUsuario.objects.get(usuário_id=request.user.id)
+
     context = {
         'pedidos_contador': pedidos_contador,
+        'perfilusuario': perfilusuario,
     }
     return render(request, 'contas/painel.html', context)
 
