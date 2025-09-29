@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Produto, NotaAvaliacao
+from .models import Produto, NotaAvaliacao, GaleriaProduto
 from categoria.models import Categoria
 from carrinhos.models import CarrinhoItem
 from django.db.models import Q
@@ -54,11 +54,14 @@ def produto_detail(request, slug_categoria, slug_produto):
     
     avaliacoes = NotaAvaliacao.objects.filter(produto_id=produto_unico.id, status=True)
 
+    galeria_produto = GaleriaProduto.objects.filter(produto_id=produto_unico.id)
+
     context = {
         'produto_unico': produto_unico,
         'in_carrinho': in_carrinho,
         'produtopedido': produtopedido,
         'avaliacoes': avaliacoes,
+        'galeria_produto': galeria_produto,
     }
     return render(request, 'loja/produto_detail.html', context)
 
