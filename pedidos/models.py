@@ -30,10 +30,12 @@ class Pedido(models.Model):
     sobrenome = models.CharField(max_length=50)
     telefone = models.CharField(max_length=15)
     email = models.EmailField(max_length=50)
-    rua = models.CharField(max_length=50)
+    endereço = models.CharField(max_length=50)    
     número = models.IntegerField()
+    bairro = models.CharField(max_length=50)
     estado = models.CharField(max_length=50)
     cidade = models.CharField(max_length=50)
+    cep = models.IntegerField()
     nota_pedido = models.CharField(max_length=100, blank=True)
     total_pedido = models.FloatField()
     status = models.CharField(max_length=10, choices=STATUS, default='Novo')
@@ -46,7 +48,7 @@ class Pedido(models.Model):
         return f'{self.nome} {self.sobrenome}'
 
     def endereço_completo(self):
-        return f'{self.rua}, {self.número}'
+        return f'{self.endereço}, {self.número}'
     
     def __str__(self):
         return self.nome

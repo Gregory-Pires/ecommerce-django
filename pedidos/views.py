@@ -91,7 +91,9 @@ def fazer_pedido(request, total=0, quantidade=0):
             data.sobrenome = form.cleaned_data['sobrenome'] 
             data.telefone = form.cleaned_data['telefone'] 
             data.email = form.cleaned_data['email'] 
-            data.rua = form.cleaned_data['rua'] 
+            data.endereço = form.cleaned_data['endereço'] 
+            data.bairro = form.cleaned_data['bairro'] 
+            data.cep = form.cleaned_data['cep'] 
             data.número = form.cleaned_data['número'] 
             data.estado = form.cleaned_data['estado'] 
             data.cidade = form.cleaned_data['cidade'] 
@@ -116,7 +118,10 @@ def fazer_pedido(request, total=0, quantidade=0):
                 'total': total,
             }
             return render(request, 'pedidos/pagamentos.html', context)
+        else:
+            print(form.errors)
     else:
+        print(form.errors)
         return redirect('checkout')
     
 def pedido_completo(request):
