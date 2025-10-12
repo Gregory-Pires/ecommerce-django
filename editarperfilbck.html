@@ -1,33 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- =================== NAVBAR =================== -->
+{% include 'includes/navbar.html' %}
 
-<section class="section-content padding-y bg">
+<section class="section-content padding-y">
 
-{% include 'includes/alerts.html' %}
-<div class="container">
-    <div class="row">
-    {% include 'includes/painel_sidebar.html' %}    
-    <main class="col-md-9">
-        <article class="card">
-        <header class="card-header">
-            <strong class="d-inline-block mr-3">Edite seu perfil</strong>
-        </header>
-        <div class="card-body">
-            <div class="text-right mb-3">
-                {% if perfilusuario.foto_perfil %}
-                    <img src="{{ perfilusuario.foto_perfil.url }}" alt="Foto de Perfil" width="100" style="border-radius:50px;">
-                {% else %}
-                    {% load static %}
-                    <img src="{% static 'images/default.png' %}" alt="Sem foto" width="100" style="border-radius:50px;">
-                {% endif %}
-            </div>
+    <div class="card mx-auto" style="max-width:720px; margin-top:40px;">
+        <article class="card-body">
+            {% include 'includes/alerts.html' %}
+            <header class="mb-4">
+                <h4 class="card-title">Editar Perfil</h4>
+            </header>
 
-            <form action="{% url 'editar_perfil' %}" method="POST" enctype="multipart/form-data" id="perfilForm">
+            <form id="perfil-form" action="{% url 'editar_perfil' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
+                <!-- Erros gerais -->
+                {% if usuario_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in usuario_form.non_field_errors %}{{ error }}<br>{% endfor %}
+                    </div>
+                {% endif %}
+                {% if perfil_form.non_field_errors %}s
+                    <div class="alert alert-danger">
+                        {% for error in perfil_form.non_field_errors %}{{ error }}<br>{% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Foto de perfil -->
+                <div class="text-center mb-4">
+                    {% if perfilusuario.foto_perfil %}
+                        <img src="{{ perfilusuario.foto_perfil.url }}" alt="Foto de Perfil" width="120" style="border-radius:50px;">
+                    {% else %}
+                        {% load static %}
+                        <img src="{% static 'images/default.png' %}" alt="Sem foto" width="120" style="border-radius:50px;">
+                    {% endif %}
+                </div>
+
+                <!-- Nome e Sobrenome -->
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Nome</label>
                         {{ usuario_form.nome }}
                         {% if usuario_form.nome.errors %}
@@ -36,7 +49,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Sobrenome</label>
                         {{ usuario_form.sobrenome }}
                         {% if usuario_form.sobrenome.errors %}
@@ -47,21 +60,20 @@
                     </div>
                 </div>
 
+                <!-- Telefone e CPF -->
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Telefone</label>
                         {{ usuario_form.numero_telefone }}
-                        <div class="text-danger small mt-1" id="error-telefone"></div>
                         {% if usuario_form.numero_telefone.errors %}
                             <div class="text-danger small mt-1">
                                 {% for error in usuario_form.numero_telefone.errors %}{{ error }}{% endfor %}
                             </div>
                         {% endif %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>CPF</label>
                         {{ usuario_form.cpf }}
-                        <div class="text-danger small mt-1" id="error-cpf"></div>
                         {% if usuario_form.cpf.errors %}
                             <div class="text-danger small mt-1">
                                 {% for error in usuario_form.cpf.errors %}{{ error }}{% endfor %}
@@ -70,20 +82,20 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Foto de Perfil</label>
-                        {{ perfil_form.foto_perfil }}
-                        {% if perfil_form.foto_perfil.errors %}
-                            <div class="text-danger small mt-1">
-                                {% for error in perfil_form.foto_perfil.errors %}{{ error }}{% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>                    
+                <!-- Foto de perfil -->
+                <div class="form-group">
+                    <label>Foto de Perfil</label>
+                    {{ perfil_form.foto_perfil }}
+                    {% if perfil_form.foto_perfil.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in perfil_form.foto_perfil.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
+                <!-- Endereço -->
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Estado</label>
                         {{ perfil_form.estado }}
                         {% if perfil_form.estado.errors %}
@@ -92,7 +104,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Cidade</label>
                         {{ perfil_form.cidade }}
                         {% if perfil_form.cidade.errors %}
@@ -104,17 +116,16 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>CEP</label>
                         {{ perfil_form.cep }}
-                        <div class="text-danger small mt-1" id="error-cep"></div>
                         {% if perfil_form.cep.errors %}
                             <div class="text-danger small mt-1">
                                 {% for error in perfil_form.cep.errors %}{{ error }}{% endfor %}
                             </div>
                         {% endif %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Bairro</label>
                         {{ perfil_form.bairro }}
                         {% if perfil_form.bairro.errors %}
@@ -126,7 +137,7 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Endereço</label>
                         {{ perfil_form.endereço }}
                         {% if perfil_form.endereço.errors %}
@@ -135,7 +146,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col form-group">
                         <label>Número</label>
                         {{ perfil_form.número }}
                         {% if perfil_form.número.errors %}
@@ -146,65 +157,34 @@
                     </div>
                 </div>
 
-                <input type="submit" value="Salvar" class="btn btn-primary">
-
-            </form>          
-        </div> <!-- card-body -->
-        
+                <button type="submit" class="btn btn-primary btn-block">Salvar</button>
+            </form>
         </article>
-    </main>
-</div>
-</div>
+    </div>
 
 </section>
 
-<!-- Máscaras e validação frontend -->
+<!-- MÁSCARAS PARA CPF, TELEFONE E CEP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 <script>
 $(document).ready(function(){
-
-    // Máscaras
     $('input[name="cpf"]').mask('000.000.000-00');
     $('input[name="numero_telefone"]').mask('(00) 00000-0000');
     $('input[name="cep"]').mask('00000-000');
 
-    // Validação inline
-    $('#perfilForm').submit(function(e){
-        let valid = true;
-
-        // CPF
-        let cpf = $('input[name="cpf"]').val().replace(/\D/g,'');
-        if(cpf.length !== 11){
-            $('#error-cpf').text('Digite um CPF válido (11 números)').removeClass('d-none');
-            valid = false;
-        } else {
-            $('#error-cpf').text('');
-        }
-
-        // Telefone
-        let tel = $('input[name="numero_telefone"]').val().replace(/\D/g,'');
-        if(tel.length < 10 || tel.length > 11){
-            $('#error-telefone').text('Digite um número de telefone válido').removeClass('d-none');
-            valid = false;
-        } else {
-            $('#error-telefone').text('');
-        }
-
-        // CEP
+    $('#perfil-form').on('submit', function(){
+        let telefone = $('input[name="numero_telefone"]').val().replace(/\D/g,'');
         let cep = $('input[name="cep"]').val().replace(/\D/g,'');
-        if(cep.length !== 8){
-            $('#error-cep').text('Digite um CEP válido').removeClass('d-none');
-            valid = false;
-        } else {
-            $('#error-cep').text('');
+        if(telefone.length < 10 || telefone.length > 11){
+            alert("Telefone inválido!");
+            return false;
         }
-
-        if(!valid){
-            e.preventDefault();
+        if(cep.length != 8){
+            alert("CEP inválido!");
+            return false;
         }
     });
-
 });
 </script>
 
