@@ -54,3 +54,13 @@ ul.thumb li img{
     height: 80px;
     border: 1px solid gray;
 }
+
+.logo {
+    width: 260px !important;
+    height: auto !important;
+}
+
+.brand-wrap {
+    display: flex;
+    align-items: center;
+}
